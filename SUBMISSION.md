@@ -25,9 +25,9 @@
 ## 3. Code & Versioning
 | Field | Details |
 | :--- | :--- |
-| **Repository URL** | *[Enter Your Public/Reviewer-Accessible GitHub Repo URL]* |
+| **Repository URL** | [https://github.com/nalluridheeraj/Hospital-Management-Platform.git](https://github.com/nalluridheeraj/Hospital-Management-Platform.git) |
 | **Primary Branch** | `main` |
-| **Final Commit ID** | `[Run: git rev-parse HEAD]` |
+| **Final Commit ID** | `5c1f0d3577bbe30dae818e33948205941d444ce9` |
 
 ---
 
@@ -71,7 +71,7 @@
 ## 8. Role-Specific Form Fields
 | Form Field | Provided Evidence / Reference |
 | :--- | :--- |
-| **CI/CD Pipeline Run URL** | *[Enter GitHub Actions Pipeline Run URL from your repository]* |
+| **CI/CD Pipeline Run URL** | [https://github.com/nalluridheeraj/Hospital-Management-Platform/actions](https://github.com/nalluridheeraj/Hospital-Management-Platform/actions) |
 | **Image Tag / Digest** | `hospital-appointment-api:latest` / `hospital-appointment-api:<commit-sha>` |
 | **Architecture Diagram** | Included in [`ARCHITECTURE.md`](file:///c:/Users/Asus/Desktop/Hospital-Management-Platform/ARCHITECTURE.md) (System Topology, Concurrency Sequence, ER Diagram). |
 | **Backup / Restore Evidence** | Included in [`EVIDENCE.md`](file:///c:/Users/Asus/Desktop/Hospital-Management-Platform/EVIDENCE.md#4-database-backup-checksum--restore-evidence) (SHA256 checksum generation, restore verification). |
