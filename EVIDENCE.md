@@ -8,7 +8,28 @@ This document provides full reproducible terminal logs and execution evidence ma
 ## 1. Concurrency Acceptance Test Evidence
 **Rule**: *"Two conflicting appointment requests must not both succeed; prevent two confirmed appointments for the same doctor/time slot, including concurrent requests."*
 
-### Automated Execution Log (`scripts/run_concurrency_demo.py`)
+### Automated Browser Execution Log (Chrome DevTools Automation)
+- **Target URL**: `http://127.0.0.1:8000/`
+- **Trigger**: Clicked `#runConcurrencyBtn` (`🚀 Fire 10 Simultaneous Conflicting Requests`) via Chrome DevTools Protocol.
+- **Evidence Screenshot**: `docs/screenshots/concurrency_test_browser_evidence.png`
+
+```text
+[INIT] Spawning 10 parallel HTTP requests competing for the exact same slot...
+[TARGET DOCTOR] Dr. David Chen | [TARGET SLOT] 11/11/2026, 8:30:00 PM
+Thread 01 -> [HTTP 201 CREATED] ✔ BOOKED SUCCESS! Code: APT-202611111500-900E7E
+Thread 02 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen is already booked for this slot.
+Thread 03 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen is already booked for this slot.
+Thread 04 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen is already booked for this slot.
+Thread 05 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen slot is locked by another concurrent booking request.
+Thread 06 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen is already booked for this slot.
+Thread 07 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen is already booked for this slot.
+Thread 08 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen is already booked for this slot.
+Thread 09 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen is already booked for this slot.
+Thread 10 -> [HTTP 409 CONFLICT] ✘ REJECTED: Conflict: Doctor Dr. David Chen is already booked for this slot.
+----------------------------------------------------------------------
+SUMMARY: 201 Created: 1 | 409 Conflict: 9
+✅ ACCEPTANCE TEST PASSED: Exactly 1 request booked. Double booking was strictly prevented!
+```
 ```text
 ======================================================================
  HOSPITAL MANAGEMENT PLATFORM - CONCURRENCY ACCEPTANCE DEMO
@@ -131,3 +152,4 @@ Severity: Medium: 0, High: 0
 Confidence: Medium: 0, High: 0
 Bandit security scan completed successfully with 0 vulnerabilities detected.
 ```
+
