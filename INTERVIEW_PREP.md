@@ -180,3 +180,4 @@ python scripts/test_failure_recovery.py
 2. The database connection is interrupted.
 3. The readiness probe catches the error and returns `503 Service Unavailable` with `database: "disconnected"`.
 4. When restored, the probe immediately transitions back to `200 OK`.
+
