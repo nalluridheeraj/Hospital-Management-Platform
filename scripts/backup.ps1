@@ -22,3 +22,4 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "Backup failed with exit code $LASTEXITCODE" -ForegroundColor Red
     exit $LASTEXITCODE
 }
+

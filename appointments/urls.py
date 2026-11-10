@@ -18,3 +18,4 @@ urlpatterns = [
     path("patients/", PatientListView.as_view(), name="patients"),
     path("audit-logs/", AuditLogListView.as_view(), name="audit-logs"),
 ]
+

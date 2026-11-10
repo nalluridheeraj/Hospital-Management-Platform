@@ -39,3 +39,4 @@ echo "[ERROR] Service failed readiness probe after rollback."
 echo "Fetching recent service logs:"
 docker compose logs --tail=50 web
 exit 1
+

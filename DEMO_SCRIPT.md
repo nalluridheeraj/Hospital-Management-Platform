@@ -91,3 +91,4 @@ Use this script as a guide to record your 3–5 minute video walkthrough (using 
 1. **Speak clearly and at a steady pace**: 3–5 minutes is plenty of time when following this structure.
 2. **Increase terminal font size**: Ensure reviewers can easily read the terminal outputs and HTTP status codes (`200`, `201`, `409`, `503`).
 3. **Verify video permissions**: If uploading to YouTube, set to **Unlisted** (not Private). If using Loom or Google Drive, ensure **Anyone with the link can view**.
+

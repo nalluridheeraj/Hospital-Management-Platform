@@ -49,3 +49,4 @@ if ($healthy) {
     docker compose logs --tail=50 web
     exit 1
 }
+

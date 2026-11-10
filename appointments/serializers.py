@@ -106,3 +106,4 @@ class AuditLogSerializer(serializers.ModelSerializer):
             "ip_address",
             "status",
         ]
+

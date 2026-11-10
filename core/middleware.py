@@ -50,3 +50,4 @@ class StructuredLoggingMiddleware:
             sys.stdout.flush()
 
         return response
+

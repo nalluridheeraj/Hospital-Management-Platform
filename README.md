@@ -267,3 +267,4 @@ For detailed incident response playbooks and operational procedures, refer to [*
 * [x] **Concurrency Acceptance**: Automated test (`tests/test_concurrency.py`) and demo script (`scripts/run_concurrency_demo.py`).
 * [x] **Disaster Recovery**: Backup, restore, and rollback scripts with automated verification test (`tests/test_backup_restore.py`).
 * [x] **Documentation & Runbook**: [ARCHITECTURE.md](file:///c:/Users/Asus/Desktop/Hospital-Management-Platform/ARCHITECTURE.md), [RUNBOOK.md](file:///c:/Users/Asus/Desktop/Hospital-Management-Platform/RUNBOOK.md), [EVIDENCE.md](file:///c:/Users/Asus/Desktop/Hospital-Management-Platform/EVIDENCE.md), [SUBMISSION.md](file:///c:/Users/Asus/Desktop/Hospital-Management-Platform/SUBMISSION.md), and [DEMO_SCRIPT.md](file:///c:/Users/Asus/Desktop/Hospital-Management-Platform/DEMO_SCRIPT.md).
+

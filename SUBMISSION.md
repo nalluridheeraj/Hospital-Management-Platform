@@ -98,3 +98,4 @@
 * [x] **Originality**: I confirm that this submission reflects my own understanding and architectural work. I can explain every component and modify any part during the technical walkthrough.
 * [x] **No Real Sensitive Data**: Strictly synthetic patient data was used. No real patient or personally identifiable information (PII) exists anywhere in this project.
 * [x] **Verified Links**: All repository, pipeline, documentation, and video demonstration links have been verified for public reviewer access.
+

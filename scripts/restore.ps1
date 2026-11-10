@@ -35,3 +35,4 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "Database restore failed with exit code $LASTEXITCODE" -ForegroundColor Red
     exit $LASTEXITCODE
 }
+

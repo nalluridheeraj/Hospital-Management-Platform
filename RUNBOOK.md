@@ -201,3 +201,4 @@ bash scripts/rollback.sh "v1.0.0"
 * **Mitigation**:
   1. Increase memory limit in `docker-compose.yml` (`limits.memory: 1G`).
   2. Apply changes: `docker compose up -d web`.
+

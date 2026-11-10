@@ -18,3 +18,4 @@ fi
 
 echo "Initiating database restore from: $BACKUP_FILE"
 python3 scripts/restore.py "$BACKUP_FILE"
+

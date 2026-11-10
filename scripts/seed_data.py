@@ -11,3 +11,4 @@ if __name__ == "__main__":
 
     force = "--force" in sys.argv
     call_command("seed_data", force=force)
+

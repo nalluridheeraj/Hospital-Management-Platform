@@ -207,3 +207,4 @@ flowchart LR
 3. **Transport Layer Hardening**: Nginx terminates TLS with modern cipher suites (`TLSv1.2`, `TLSv1.3`), enforces HTTP Strict Transport Security (`HSTS`), and applies `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, and `X-XSS-Protection`.
 4. **Synthetic Data Quarantine**: No real patient data is permitted or processed in accordance with HIPAA / GDPR compliance guidelines. Seed scripts populate only synthetic clinical profiles.
 5. **Secret Hygiene**: Zero credentials or private keys are committed into Git. All sensitive parameters are resolved through environment variables with `.env.example` placeholders.
+
