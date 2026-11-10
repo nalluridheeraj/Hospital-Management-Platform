@@ -7,6 +7,8 @@ from rest_framework import status, viewsets, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from django.shortcuts import render
+from django.views.generic import TemplateView
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST, Counter, Histogram
 
 from .models import Doctor, DoctorSlot, Patient, Appointment, AuditLog
@@ -376,3 +378,7 @@ class AuditLogListView(APIView):
             logs = logs.filter(action=action_filter)
         serializer = AuditLogSerializer(logs[:100], many=True)
         return Response(serializer.data)
+
+
+class DashboardView(TemplateView):
+    template_name = "dashboard.html"

@@ -5,9 +5,12 @@ from appointments.views import (
     HealthLivenessView,
     HealthReadinessView,
     PrometheusMetricsView,
+    DashboardView,
 )
 
 urlpatterns = [
+    # Interactive Web Testing Dashboard
+    path("", DashboardView.as_view(), name="dashboard"),
     path("admin/", admin.site.urls),
     # Observability Probes
     path("health/liveness/", HealthLivenessView.as_view(), name="health-liveness"),

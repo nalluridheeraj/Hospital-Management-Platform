@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management Platform - Live Testing Dashboard</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; padding: 24px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+        .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; }
+        .badge-healthy { background: #dcfce7; color: #15803d; }
+        .badge-unhealthy { background: #fee2e2; color: #b91c1c; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; margin-bottom: 24px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .card h2 { font-size: 1.25rem; margin-bottom: 16px; color: var(--primary-dark); display: flex; align-items: center; gap: 8px; }
+        .btn { display: inline-block; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; font-size: 0.9rem; transition: background 0.2s; text-align: center; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #b91c1c; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .btn-outline:hover { background: #f1f5f9; }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+        select, input, textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; }
+        .results-box { max-height: 280px; overflow-y: auto; background: #0f172a; color: #f8fafc; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.85rem; }
+        .res-success { color: #4ade80; }
+        .res-conflict { color: #f87171; }
+        .res-info { color: #38bdf8; }
+        .nav-links { display: flex; gap: 12px; }
+        .nav-links a { color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .nav-links a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>Hospital Management Platform</h1>
+                <p style="color: var(--text-muted);">DevOps & Cloud Engineering - Live Interactive API & Concurrency Testing Dashboard</p>
+            </div>
+            <div style="text-align: right;">
+                <div id="healthBadge" class="badge badge-healthy">● System Ready (DB Connected)</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;" id="latencyText">Latency: checking...</div>
+            </div>
+        </header>
+
+        <div style="background: #e0f2fe; border: 1px solid #bae6fd; border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong>Active Identity:</strong> <span id="currentRole">Patient (patient.john)</span>
+            </div>
+            <div class="nav-links">
+                <a href="/health/liveness/" target="_blank">Liveness Probe</a>
+                <a href="/health/readiness/" target="_blank">Readiness Probe</a>
+                <a href="/metrics/" target="_blank">Prometheus Metrics</a>
+                <a href="/admin/" target="_blank">Django Admin</a>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Card 1: Live Concurrency Race Condition Drill -->
+            <div class="card" style="grid-column: span 2;">
+                <h2>⚡ Live Concurrency Stress Test: Double Booking Prevention</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">
+                    Dispatches <strong>10 simultaneous requests</strong> competing to book the exact same doctor and time slot.
+                    The platform's <code>select_for_update()</code> lock guarantees <strong>exactly ONE</strong> request succeeds (201 Created),
+                    while all 9 conflicting requests are rejected with <strong>HTTP 409 Conflict</strong>.
+                </p>
+                <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 16px;">
+                    <button class="btn btn-danger" id="runConcurrencyBtn" onclick="runConcurrencyDrill()">
+                        🚀 Fire 10 Simultaneous Conflicting Requests
+                    </button>
+                    <span id="concurrencyStatus" style="font-size: 0.85rem; font-weight: 600;"></span>
+                </div>
+                <div class="results-box" id="concurrencyResults">
+                    <div class="res-info">[READY] Click the button above to simulate 10 simultaneous threads competing for Doctor 4's slot...</div>
+                </div>
+            </div>
+
+            <!-- Card 2: Interactive Appointment Booking -->
+            <div class="card">
+                <h2>📅 Book Doctor Appointment</h2>
+                <div class="form-group">
+                    <label>Select Physician</label>
+                    <select id="doctorSelect" onchange="loadDoctorSlots()"></select>
+                </div>
+                <div class="form-group">
+                    <label>Available Consultation Slot</label>
+                    <select id="slotSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label>Synthetic Patient Profile</label>
+                    <select id="patientSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label>Clinical Reason</label>
+                    <input type="text" id="bookingReason" value="Routine medical checkup">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="bookAppointment()">Confirm Appointment</button>
+                <div id="bookingMsg" style="margin-top: 10px; font-size: 0.85rem; font-weight: 600;"></div>
+            </div>
+
+            <!-- Card 3: Recent Appointments & System Status -->
+            <div class="card">
+                <h2>📋 Active Appointments</h2>
+                <button class="btn btn-outline" style="width: 100%; margin-bottom: 12px;" onclick="loadAppointments()">Refresh Appointments List</button>
+                <div id="appointmentsList" style="max-height: 240px; overflow-y: auto; font-size: 0.85rem;">
+                    <em>Loading appointments...</em>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let authToken = "";
+
+        async function initAuth() {
+            try {
+                const resp = await fetch("/api/v1/auth/token/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username: "patient.john", password: "Patient@Password2026!" })
+                });
+                const data = await resp.json();
+                authToken = data.access;
+                checkHealth();
+                loadDoctors();
+                loadPatients();
+                loadAppointments();
+            } catch (e) {
+                console.error("Auth initialization failed:", e);
+            }
+        }
+
+        async function checkHealth() {
+            try {
+                const start = performance.now();
+                const resp = await fetch("/health/readiness/");
+                const data = await resp.json();
+                const latency = Math.round(performance.now() - start);
+
+                const badge = document.getElementById("healthBadge");
+                const latencyText = document.getElementById("latencyText");
+
+                if (resp.status === 200) {
+                    badge.className = "badge badge-healthy";
+                    badge.innerText = "● System Ready (DB Connected)";
+                    latencyText.innerText = `DB Latency: ${data.database.latency_ms || latency}ms`;
+                } else {
+                    badge.className = "badge badge-unhealthy";
+                    badge.innerText = "● System Outage (503)";
+                    latencyText.innerText = "Database Disconnected";
+                }
+            } catch (e) {
+                document.getElementById("healthBadge").className = "badge badge-unhealthy";
+                document.getElementById("healthBadge").innerText = "● Network Offline";
+            }
+        }
+
+        async function loadDoctors() {
+            const resp = await fetch("/api/v1/doctors/", {
+                headers: { "Authorization": `Bearer ${authToken}` }
+            });
+            const doctors = await resp.json();
+            const select = document.getElementById("doctorSelect");
+            select.innerHTML = doctors.map(d => `<option value="${d.id}">${d.doctor_code} - ${d.name} (${d.specialization})</option>`).join("");
+            loadDoctorSlots();
+        }
+
+        async function loadDoctorSlots() {
+            const doctorId = document.getElementById("doctorSelect").value;
+            if (!doctorId) return;
+            const resp = await fetch(`/api/v1/doctors/${doctorId}/slots/?available_only=true`, {
+                headers: { "Authorization": `Bearer ${authToken}` }
+            });
+            const slots = await resp.json();
+            const select = document.getElementById("slotSelect");
+            if (slots.length === 0) {
+                select.innerHTML = "<option value=''>No available slots</option>";
+            } else {
+                select.innerHTML = slots.map(s => {
+                    const dt = new Date(s.start_time).toLocaleString();
+                    return `<option value="${s.id}">${dt}</option>`;
+                }).join("");
+            }
+        }
+
+        async function loadPatients() {
+            const resp = await fetch("/api/v1/patients/", {
+                headers: { "Authorization": `Bearer ${authToken}` }
+            });
+            const patients = await resp.json();
+            const select = document.getElementById("patientSelect");
+            select.innerHTML = patients.map(p => `<option value="${p.id}">${p.patient_code} - ${p.full_name}</option>`).join("");
+        }
+
+        async function loadAppointments() {
+            const listDiv = document.getElementById("appointmentsList");
+            try {
+                const resp = await fetch("/api/v1/appointments/", {
+                    headers: { "Authorization": `Bearer ${authToken}` }
+                });
+                const data = await resp.json();
+                if (data.length === 0) {
+                    listDiv.innerHTML = "<p style='color: var(--text-muted);'>No appointments booked yet.</p>";
+                    return;
+                }
+                listDiv.innerHTML = data.map(apt => `
+                    <div style="border-bottom: 1px solid var(--border); padding: 8px 0;">
+                        <strong>${apt.appointment_code}</strong> <span style="color: #16a34a; font-weight:600;">[${apt.status}]</span><br>
+                        ${apt.doctor_name} with ${apt.patient_name}<br>
+                        <small style="color: var(--text-muted);">${new Date(apt.start_time).toLocaleString()} - ${apt.reason}</small>
+                    </div>
+                `).join("");
+            } catch (e) {
+                listDiv.innerHTML = "<p style='color: red;'>Failed to load appointments.</p>";
+            }
+        }
+
+        async function bookAppointment() {
+            const msg = document.getElementById("bookingMsg");
+            const doctorId = document.getElementById("doctorSelect").value;
+            const slotId = document.getElementById("slotSelect").value;
+            const patientId = document.getElementById("patientSelect").value;
+            const reason = document.getElementById("bookingReason").value;
+
+            if (!slotId) {
+                msg.style.color = "red";
+                msg.innerText = "Please select an available slot.";
+                return;
+            }
+
+            msg.style.color = "blue";
+            msg.innerText = "Booking consultation...";
+
+            const resp = await fetch("/api/v1/appointments/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authToken}`
+                },
+                body: JSON.stringify({ doctor_id: doctorId, slot_id: slotId, patient_id: patientId, reason: reason })
+            });
+
+            const data = await resp.json();
+            if (resp.status === 201) {
+                msg.style.color = "#16a34a";
+                msg.innerText = `✔ Confirmed! Code: ${data.appointment_code}`;
+                loadDoctorSlots();
+                loadAppointments();
+            } else if (resp.status === 409) {
+                msg.style.color = "#dc2626";
+                msg.innerText = `✘ Conflict: ${data.detail || "Slot is already booked!"}`;
+                loadDoctorSlots();
+            } else {
+                msg.style.color = "#dc2626";
+                msg.innerText = `Error (${resp.status}): ${JSON.stringify(data)}`;
+            }
+        }
+
+        async function runConcurrencyDrill() {
+            const btn = document.getElementById("runConcurrencyBtn");
+            const statusText = document.getElementById("concurrencyStatus");
+            const resultsBox = document.getElementById("concurrencyResults");
+
+            btn.disabled = true;
+            statusText.style.color = "blue";
+            statusText.innerText = "Dispatching 10 simultaneous requests...";
+            resultsBox.innerHTML = "<div class='res-info'>[INIT] Spawning 10 parallel HTTP requests competing for the exact same slot...</div>";
+
+            // Find an available slot from Doctor 4
+            const docResp = await fetch("/api/v1/doctors/", { headers: { "Authorization": `Bearer ${authToken}` } });
+            const docs = await docResp.json();
+            const targetDoc = docs[docs.length - 1]; // DOC-004
+
+            const slotsResp = await fetch(`/api/v1/doctors/${targetDoc.id}/slots/?available_only=true`, { headers: { "Authorization": `Bearer ${authToken}` } });
+            let slots = await slotsResp.json();
+            if (slots.length === 0) {
+                // Fetch any slot
+                const allSlots = await (await fetch(`/api/v1/doctors/${targetDoc.id}/slots/?available_only=false`, { headers: { "Authorization": `Bearer ${authToken}` } })).json();
+                slots = allSlots;
+            }
+            const targetSlot = slots[0];
+
+            const patResp = await fetch("/api/v1/patients/", { headers: { "Authorization": `Bearer ${authToken}` } });
+            const patients = await patResp.json();
+
+            resultsBox.innerHTML += `<div class='res-info'>[TARGET DOCTOR] ${targetDoc.name} | [TARGET SLOT] ${new Date(targetSlot.start_time).toLocaleString()}</div>`;
+
+            // Fire 10 simultaneous requests
+            const promises = [];
+            for (let i = 1; i <= 10; i++) {
+                const req = fetch("/api/v1/appointments/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        doctor_id: targetDoc.id,
+                        slot_id: targetSlot.id,
+                        patient_id: patients[i % patients.length].id,
+                        reason: `Simultaneous thread-${i}`
+                    })
+                }).then(async r => ({
+                    id: i,
+                    status: r.status,
+                    data: await r.json()
+                }));
+                promises.push(req);
+            }
+
+            const results = await Promise.all(promises);
+
+            let successCount = 0;
+            let conflictCount = 0;
+
+            results.forEach(res => {
+                if (res.status === 201) {
+                    successCount++;
+                    resultsBox.innerHTML += `<div class='res-success'> Thread ${res.id.toString().padStart(2, '0')} -> [HTTP 201 CREATED]  ✔ BOOKED SUCCESS! Code: ${res.data.appointment_code}</div>`;
+                } else if (res.status === 409) {
+                    conflictCount++;
+                    resultsBox.innerHTML += `<div class='res-conflict'> Thread ${res.id.toString().padStart(2, '0')} -> [HTTP 409 CONFLICT] ✘ REJECTED: ${res.data.detail || "Slot already claimed"}</div>`;
+                } else {
+                    resultsBox.innerHTML += `<div style='color: orange;'> Thread ${res.id.toString().padStart(2, '0')} -> [HTTP ${res.status}] ${JSON.stringify(res.data)}</div>`;
+                }
+            });
+
+            resultsBox.innerHTML += `<div class='res-info'>----------------------------------------------------------------------</div>`;
+            resultsBox.innerHTML += `<div class='res-info'>SUMMARY: 201 Created: ${successCount} | 409 Conflict: ${conflictCount}</div>`;
+
+            if (successCount === 1 && conflictCount === 9) {
+                resultsBox.innerHTML += `<div class='res-success' style='font-size: 1rem; font-weight: bold;'>✅ ACCEPTANCE TEST PASSED: Exactly 1 request booked. Double booking was strictly prevented!</div>`;
+                statusText.style.color = "#16a34a";
+                statusText.innerText = "✔ Passed (1 Success, 9 Conflicts)";
+            } else {
+                statusText.style.color = "red";
+                statusText.innerText = `Result: ${successCount} Created, ${conflictCount} Conflicts`;
+            }
+
+            btn.disabled = false;
+            loadAppointments();
+            loadDoctorSlots();
+        }
+
+        window.onload = initAuth;
+        setInterval(checkHealth, 5000);
+    </script>
+</body>
+</html>
