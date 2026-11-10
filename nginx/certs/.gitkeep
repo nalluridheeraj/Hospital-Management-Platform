@@ -1,0 +1,3 @@
+# SSL Certificates directory
+# Run scripts/generate_certs.sh or scripts/generate_certs.ps1 to generate server.crt and server.key
+

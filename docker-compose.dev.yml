@@ -1,0 +1,25 @@
+# ==============================================================================
+# Docker Compose Development Override - Hospital Management Platform
+# Use for local developer convenience:
+# docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+# ==============================================================================
+
+version: "3.8"
+
+services:
+  db:
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/home/appuser/app/app:ro
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+
